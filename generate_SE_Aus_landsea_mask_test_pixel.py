@@ -39,8 +39,13 @@ def main():
     row = 292
     col = 590
     landsea[row,col]=0.0
-
+    row = 292
+    col = 591
+    landsea[row,col]=0.0
     
+
+
+
     ds_out['landsea'][:,:] = landsea
 
     ds_out.to_netcdf(out_fname)
