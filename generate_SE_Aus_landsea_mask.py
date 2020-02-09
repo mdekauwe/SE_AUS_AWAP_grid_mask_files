@@ -21,18 +21,22 @@ import sys
 import shutil
 import netCDF4
 
-def main():
+def main(in_fname, out_fname):
 
-    in_fname = "raw/MD_elev_orig_std_avg-sand_AWAP_AU_landmask.nc"
-    out_fname = "SE_AUS_AWAP_landmask.nc"
+    
     ds = xr.open_dataset(in_fname)
 
     ds_out = ds.copy()
 
     landsea = ds.landsea.values
+    #landsea = np.where(np.logical_and(
+    #                      ((ds_out.lat <= -28.0) & (ds_out.lat >= -40.0) &
+    #                       (ds_out.lon >= 140.0) & (ds_out.lon <= 154.0)),
+    #                      landsea == 0.0),
+    #                      0.0, 1.0)
     landsea = np.where(np.logical_and(
-                          ((ds_out.lat <= -28.0) & (ds_out.lat >= -40.0) &
-                           (ds_out.lon >= 140.0) & (ds_out.lat <= 154.0)),
+                          ((ds_out.latitude <= -28.0) & (ds_out.latitude >= -40.0) &
+                           (ds_out.longitude >= 140.0) & (ds_out.longitude <= 154.0)),
                           landsea == 0.0),
                           0.0, 1.0)
 
@@ -43,4 +47,11 @@ def main():
 
 if __name__ == "__main__":
 
-    main()
+    #in_fname = "raw/MD_elev_orig_std_avg-sand_AWAP_AU_landmask.nc"
+    in_fname = "raw/mask/gridinfo_AWAP_CSIRO_AU_NAT_mask.nc"
+    out_fname = "mask/SE_AUS_AWAP_csiro_soil_landmask.nc"
+    main(in_fname, out_fname)
+
+    in_fname = "raw/mask/gridinfo_AWAP_OpenLandMap_mask.nc"
+    out_fname = "mask/SE_AUS_AWAP_OpenLand_soil_landmask.nc"
+    main(in_fname, out_fname)

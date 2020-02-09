@@ -39,12 +39,12 @@ def main():
     row = 292
     col = 590
     landsea[row,col]=0.0
-    row = 292
-    col = 591
-    landsea[row,col]=0.0
-    row = 292
-    col = 592
-    landsea[row,col]=0.0
+    #row = 292
+    #col = 591
+    #landsea[row,col]=0.0
+    #row = 292
+    #col = 592
+    #landsea[row,col]=0.0
 
 
 

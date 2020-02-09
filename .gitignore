@@ -1,2 +1,7 @@
 raw/*.nc
+grid/*.nc
 *.nc
+grid/*.nc
+grid/*
+raw/*
+.DS_Store
