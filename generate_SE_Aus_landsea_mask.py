@@ -21,9 +21,9 @@ import sys
 import shutil
 import netCDF4
 
-def main(in_fname, out_fname):
+def main(in_fname, out_fname, openLand=False, csiro_fname=None):
 
-    
+
     ds = xr.open_dataset(in_fname)
 
     ds_out = ds.copy()
@@ -40,6 +40,14 @@ def main(in_fname, out_fname):
                           landsea == 0.0),
                           0.0, 1.0)
 
+    # mask by CSIRO sea too...we seem to have a few bad coastal pixels in the
+    # openland mask file.
+    if openLand:
+        ds_csiro = xr.open_dataset(csiro_fname)
+        landsea_csiro = ds_csiro.landsea.values
+        landsea = np.where(landsea_csiro == 1.0, 1.0, landsea)
+
+
     ds_out['landsea'][:,:] = landsea
 
     ds_out.to_netcdf(out_fname)
@@ -54,4 +62,5 @@ if __name__ == "__main__":
 
     in_fname = "raw/mask/gridinfo_AWAP_OpenLandMap_mask.nc"
     out_fname = "mask/SE_AUS_AWAP_OpenLand_soil_landmask.nc"
-    main(in_fname, out_fname)
+    main(in_fname, out_fname, openLand=True,
+         csiro_fname="mask/SE_AUS_AWAP_csiro_soil_landmask.nc")
